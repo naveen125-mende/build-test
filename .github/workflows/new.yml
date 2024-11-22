@@ -1,4 +1,6 @@
-name:  PR
+
+name: PR
+
 
 on:
   pull_request:
@@ -23,7 +25,4 @@ jobs:
 
     - name: Run Python script
       run: python file.py
-    
-
-     
 
