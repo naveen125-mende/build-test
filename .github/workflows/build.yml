@@ -3,7 +3,7 @@ name: schedule
 on:
   schedule:
   
-    - cron: '58 9 * * *'
+    - cron: '04 10 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
