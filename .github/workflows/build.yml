@@ -3,8 +3,7 @@ name: CI/CD
 on:
   schedule:
   
-    - cron: '20 9 * * *'  # This will trigger at 2:50 PM IST (9:20 AM UTC)
-
+    - cron: '25 9 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
