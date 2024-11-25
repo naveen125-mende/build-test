@@ -2,8 +2,9 @@ name: CI/CD
 
 on:
   schedule:
-    - cron: '42 8 * * *'  
-
+    - cron: '46 8 * * *'  
+    - cron: '47 8 * * *' 
+    
 jobs:
   build:
     runs-on: ubuntu-latest
