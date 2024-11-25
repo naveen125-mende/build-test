@@ -1,12 +1,9 @@
 name: CI/CD
 
 on:
-
-  schedule: 
-    - cron: '3 9 * * *'
-    
-    - cron: '4 9 * * *'
-
+  schedule:
+  
+    - cron: '20 9 * * *'  # This will trigger at 2:50 PM IST (9:20 AM UTC)
 
 jobs:
   build:
@@ -26,4 +23,5 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    
+    - name: Run Python script
+      run: python file.py
