@@ -1,9 +1,9 @@
 name: CI/CD
 
 on:
-
   schedule:
-    - cron:  '05 12 * * *'
+    - cron: '08 12 * * *'  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,6 +16,7 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: 3.11 
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -23,4 +24,3 @@ jobs:
 
     - name: Run Python script
       run: python file.py
-    
