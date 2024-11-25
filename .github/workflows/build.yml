@@ -3,7 +3,7 @@ name: CI/CD
 on:
 
   schedule:
-    - cron:  '58 13 * * *'
+    - cron:  '01 14 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
