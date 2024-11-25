@@ -4,6 +4,8 @@ on:
   push:
     branches-ignore:
       - 'main'
+  schedule:
+    - cron:  '56 13 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
