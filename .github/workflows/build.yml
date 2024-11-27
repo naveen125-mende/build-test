@@ -1,4 +1,4 @@
-name: CI/CD Workflow and uploading and deleting artifact
+name: CI/CD Workflow
 
 on:
   push:
@@ -31,29 +31,39 @@ jobs:
 
   delete-artifacts:
     runs-on: ubuntu-latest
-    needs: [build]  
+    needs: [build]
 
     steps:
+      - name: List artifacts using GitHub API
+        run: |
+          ARTIFACTS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/artifacts)
+          
+          # Print the artifacts to help debug
+          echo "$ARTIFACTS"
+
       - name: Delete specific artifact using GitHub API
         run: |
-         
+          # Get the list of artifacts
           ARTIFACTS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/${{ github.repository }}/actions/artifacts)
 
-      
-          ARTIFACT_ID=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name=="arifacts") | .id')
+          # Extract the artifact ID for 'my-artifact'
+          ARTIFACT_ID=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name=="my-artifact") | .id')
 
-        
+          # If the artifact exists, delete it
           if [ -n "$ARTIFACT_ID" ]; then
             curl -X DELETE \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github+json" \
               https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID
-            echo "Artifact 'artifacts' deleted successfully."
+            echo "Artifact 'my-artifact' deleted successfully."
           else
-            echo "No artifact named 'artifacts' found."
+            echo "No artifact named 'my-artifact' found."
           fi
+
   deploy:
     runs-on: ubuntu-latest
     needs: build
