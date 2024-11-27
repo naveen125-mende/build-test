@@ -23,17 +23,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Create artifact
-        run: |
-          mkdir -p build-test/artifacts
-          echo "Build output" > build-test/artifacts/output.txt
-
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: my-artifact
           path: build-test/artifacts
-          
+
   delete_artifacts:
     runs-on: ubuntu-latest
 
