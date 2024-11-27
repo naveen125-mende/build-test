@@ -3,7 +3,7 @@ name: Delete Artifacts
 on:
   push:
     branches:
-      - main
+      - branch1
 
 jobs:
   delete_artifacts:
