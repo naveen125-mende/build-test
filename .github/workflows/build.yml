@@ -31,16 +31,26 @@ jobs:
 
   delete-artifacts:
     runs-on: ubuntu-latest
-    needs: [deploy]
+    needs: [build]  # Ensures the delete-artifacts job runs after the build job
 
     steps:
-      - name: Delete artifacts using GitHub API
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Delete specific artifact using GitHub API
         run: |
-          curl -X DELETE \
-          -H "Authorization: Bearer $GITHUB_TOKEN" \
-          -H "Accept: application/vnd.github+json" \
-          https://api.github.com/repos/${{ github.repository }}/actions/artifacts
+          # Get the list of artifacts
+          ARTIFACTS=$(curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/artifacts)
 
-  
+          # Extract the artifact ID for 'my-artifact'
+          ARTIFACT_ID=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name=="my-artifact") | .id')
+
+          # If the artifact exists, delete it
+          if [ -n "$ARTIFACT_ID" ]; then
+            curl -X DELETE \
+              -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github+json" \
+              https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID
+            echo "Artifact 'my-artifact' deleted successfully."
+          else
+            echo "No artifact named 'my-artifact' found."
+          fi
