@@ -40,6 +40,9 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/${{ github.repository }}/actions/artifacts)
 
+          # Print the API response for debugging purposes
+          echo "API response: $ARTIFACTS"
+
           ARTIFACT_ID=$(echo "$ARTIFACTS" | jq -r '.artifacts[] | select(.name=="my-artifact") | .id')
 
           if [ -n "$ARTIFACT_ID" ]; then
@@ -51,6 +54,7 @@ jobs:
           else
             echo "No artifact named 'my-artifact' found."
           fi
+
 
 
   deploy:
