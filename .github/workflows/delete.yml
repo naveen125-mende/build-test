@@ -1,0 +1,21 @@
+name: Delete Artifacts
+
+on:
+  push:
+    branches:
+      - branch1
+
+jobs:
+  delete_artifacts:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Delete Artifact
+        run: |
+          curl -X DELETE \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/my-artifact"
